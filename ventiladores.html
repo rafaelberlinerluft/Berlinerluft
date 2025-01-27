@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Controle de CP</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background-color: #505dcf;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            justify-content: flex-start;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 350px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f8f8f8;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .frame {
+            background-color: #fff;
+            padding: 15px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .frame.dados-liberacao .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .frame.dados-liberacao input[type="text"],
+        .frame.dados-liberacao input[type="date"] {
+            width: 100%;
+            margin-bottom: 10px;
+            height: 40px; /* Altura aumentada para facilitar a interação */
+            box-sizing: border-box;
+        }
+
+        .frame.dados-liberacao button {
+            height: 40px;
+        }
+
+        h2, h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        input[type="text"], button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #6579c7;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #455284;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        span {
+            display: inline-block;
+            margin-left: 5px;
+        }
+    </style>
+    <script>
+        function pesquisar() {
+            var numeroPedido = document.getElementById("numero_pedido").value;
+
+            // Verifica se o número do pedido tem exatamente 5 dígitos
+            var regex = /^\d{5}$/;
+
+            if (!regex.test(numeroPedido)) {
+                alert("O número do pedido deve conter exatamente 5 dígitos.");
+                return; // Interrompe a execução se o formato for inválido
+            }
+
+            // Fazer a requisição AJAX para pesquisar.php
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "pesquisar.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+
+                    if (response.error) {
+                        alert(response.error); // Exibe erro se não encontrou o pedido
+                    } else {
+                        // Atualiza os labels com os dados retornados
+                        document.getElementById("numero_do_pedido").textContent = numeroPedido;
+                        document.getElementById("cliente").textContent = response.cliente || "N/A";
+                        document.getElementById("data_entrada_colet").textContent = response.data_entrada_colet || "N/A";
+                        document.getElementById("liberado_por").value = response.liberado_por || "N/A";
+                        document.getElementById("data_liberacao").textContent = response.data_liberacao || "N/A";
+                        // Limpar itens antigos
+                        const itensContainer = document.getElementById("itens_do_pedido");
+                        itensContainer.innerHTML = ""; // Limpar itens existentes
+
+                        // Adicionar novos itens ao frame
+                        if (response.itens && response.itens.length > 0) {
+                            response.itens.forEach(function(item) {
+                                const itemDiv = document.createElement("div");
+                                itemDiv.textContent = "Item: " + item.item + ", MDA ID: " + item.mda_id;
+                                itensContainer.appendChild(itemDiv);
+                            });
+                        } else {
+                            itensContainer.innerHTML = "<div>Sem itens disponíveis.</div>";
+                        }
+                    }
+                } else if (xhr.readyState === 4) {
+                    alert("Erro ao realizar a pesquisa.");
+                }
+            };
+
+            xhr.send("pedido=" + numeroPedido);
+        }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <h1>Controle de liberação de CPs - Engenharia</h1>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h3>Dados do pedido</h3>
+            <div class="frame">
+                <input type="text" id="numero_pedido" placeholder="Número do Pedido (5 dígitos)" maxlength="5" pattern="\d{5}" title="Insira exatamente 5 dígitos numéricos">
+                <button onclick="pesquisar()">Pesquisar</button>
+                <label>Número do Pedido:</label>
+                <span id="numero_do_pedido"></span><br>
+                <label>Cliente:</label>
+                <span id="cliente"></span><br>
+                <label>Data Entrada Colet:</label>
+                <span id="data_entrada_colet"></span>
+            </div>
+
+            <div class="frame dados-liberacao">
+                <h3>Dados de Liberação</h3>
+                <div class="input-group">
+                    <label>Liberado por:</label>
+                    <input type="text" id="liberado_por" placeholder="Liberado Por">
+
+                    <label>Data Liberação:</label>
+                    <input type="date" id="data_liberacao">
+
+                    <label>Compras Antecipadas:</label>
+                    <input type="text" id="compras_antecipadas">
+
+                    <label>Data Antecipação:</label>
+                    <input type="date" id="data_antecipacao">
+
+                    <label>Conferido por:</label>
+                    <input type="text" id="conferido_por">
+
+                    <label>Data Conferência:</label>
+                    <input type="date" id="data_conferencia">
+
+                    <label>Observações:</label>
+                    <input type="text" id="observacoes">
+                </div>
+                <button type="button">Salvar Dados</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h2>Ventiladores</h2>
+            <div class="frame">
+                <h3>Itens do Pedido</h3>
+                <div id="itens_do_pedido">
+                    <!-- Itens serão adicionados aqui dinamicamente -->
+                </div>
+            </div>
+
+            <div class="frame">
+                <h3>Observações do Pedido</h3>
+                <p>Conteúdo da Observação do pedido.</p>
+            </div>
+
+
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    background-color: #505dcf;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Container que ocupa 100% da altura e largura da tela */
+.container {
+    display: flex;
+    justify-content: flex-start; /* Alinhado à esquerda */
+    height: 100vh; /* Altura total da tela */
+}
+
+/* Sidebar esquerda e direita (aumentada em 100px) */
+.sidebar {
+    width: 350px; /* Aumentado de 250px para 350px */
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto; /* Adiciona scroll, caso necessário */
+}
+
+/* Conteúdo principal */
+.main-content {
+    flex-grow: 1; /* Ocupar todo o espaço restante */
+    padding: 20px;
+    background-color: #f8f8f8;
+    box-sizing: border-box;
+    overflow-y: auto; /* Scroll no conteúdo principal, se necessário */
+}
+
+/* Estrutura das frames (blocos) */
+.frame {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para o frame específico de "dados de liberação" */
+.frame.dados-liberacao .input-group {
+    display: flex;
+    flex-direction: column; /* Alinha todos os elementos em uma coluna */
+}
+
+/* Aumentar a altura dos inputs para todos os tipos */
+.frame.dados-liberacao input[type="text"],
+.frame.dados-liberacao input[type="date"] {
+    width: 100%; /* Ocupa a largura total do frame */
+    margin-bottom: 10px;
+    height: 40px; /* Define a altura para 40px (ou outro valor que preferir) */
+    box-sizing: border-box; /* Inclui padding e border na largura e altura total */
+}
+
+/* Botão */
+.frame.dados-liberacao button {
+    height: 25px; /* Ajusta a altura do botão para igualar os inputs */
+}
+
+h2, h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Estilização dos inputs e botões */
+input[type="text"], button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #6579c7;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #455284;
+}
+
+label {
+    font-weight: bold;
+}
+
+span {
+    display: inline-block;
+    margin-left: 5px;
+}

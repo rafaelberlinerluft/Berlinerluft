@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Climatizadores</title>
+    
+    <!-- Ligação para o arquivo CSS externo -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <img class="logo" src="https://ventowin.berlinerluft.com.br/img/logo_berlinerluft_v2.jpg" alt="Logo">
+        <h1>Climatizadores</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ventiladores.html">Ventiladores</a></li>
+                <li><a href="climatizadores.html">Climatizadores</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <div class="coluna-esquerda">
+            <section id="links">
+                <h2>Seções</h2>
+                <ul>
+                    <li><a href="ventiladores.html">Ventiladores</a></li>
+                    <li><a href="climatizadores.html">Climatizadores</a></li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="coluna-direita">
+            <section id="climatizadores">
+                <h2>Informações sobre Climatizadores</h2>
+                <p>Aqui você pode colocar informações detalhadas sobre os climatizadores disponíveis.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Minha Página. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>
